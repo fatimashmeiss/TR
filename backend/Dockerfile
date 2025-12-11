@@ -1,4 +1,4 @@
-# Stage 1: PHP + composer build
+# Stage 1: builder
 FROM php:8.2-fpm AS builder
 
 RUN apt-get update && apt-get install -y \
@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www/html
 
-# انسخي كل محتويات مجلد backend
+# Copy Laravel backend files (because Dockerfile is already inside backend)
 COPY . .
 
 # Install composer
@@ -15,7 +15,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN composer install --no-dev --optimize-autoloader
 
-# Stage 2
+
+# Stage 2: production image
 FROM php:8.2-fpm
 
 WORKDIR /var/www/html
