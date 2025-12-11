@@ -33,3 +33,6 @@ EXPOSE 80
 
 
 CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
+
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=80"]
+
