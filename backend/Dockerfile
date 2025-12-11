@@ -1,36 +1,34 @@
-# Use the official PHP image with Apache
-FROM php:8.2-apache
+# Stage 1: PHP + composer build
+FROM php:8.2-fpm AS builder
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
-
-# Install system dependencies
+# Install system deps
 RUN apt-get update && apt-get install -y \
-    git \
-    zip \
-    unzip \
-    libpq-dev \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev
+    zip unzip git curl libpng-dev libonig-dev libxml2-dev && \
+    docker-php-ext-install pdo pdo_mysql
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
+# Copy backend source code
+WORKDIR /var/www/html
+COPY . .
 
-# Install Composer
+# Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Stage 2: production image
+FROM php:8.2-fpm
+
 WORKDIR /var/www/html
 
-# Copy all backend files (VERY IMPORTANT)
-COPY . /var/www/html
+# Install PHP extensions
+RUN apt-get update && apt-get install -y \
+    zip unzip libpng-dev libonig-dev libxml2-dev && \
+    docker-php-ext-install pdo pdo_mysql
 
-# Install dependencies
-RUN composer install --no-dev --optimize-autoloader
+COPY --from=builder /var/www/html .
 
 # Expose port 80
 EXPOSE 80
 
-# Start Apache
-CMD ["apache2-foreground"]
+CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
