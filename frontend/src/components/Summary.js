@@ -6,7 +6,8 @@ function Summary() {
   const [totalPerCategory, setTotalPerCategory] = useState([]);
   const [dailyBreakdown, setDailyBreakdown] = useState([]);
 
-  const API_BASE = "http://127.0.0.1:8000/api/summary";
+  const API_URL = `${process.env.REACT_APP_API_BASE_URL}/...`;
+
 
   // Load summary when page loads
   useEffect(() => {

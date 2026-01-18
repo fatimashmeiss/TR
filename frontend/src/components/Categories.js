@@ -6,7 +6,8 @@ function Categories() {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState("");
   const [editingId, setEditingId] = useState(null);
-  const API_URL = "http://127.0.0.1:8000/api/categories";
+  const API_URL = `${process.env.REACT_APP_API_BASE_URL}/...`;
+
 
 
 
