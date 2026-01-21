@@ -16,6 +16,13 @@ function TimeEntries() {
 
   const API_BASE = process.env.REACT_APP_API_BASE_URL;
 
+    axios.get(`${API_BASE}/categories`);
+    axios.get(`${API_BASE}/time-entries`);
+    axios.post(`${API_BASE}/time-entries`, payload);
+    axios.put(`${API_BASE}/time-entries/${editingId}`, payload);
+    axios.delete(`${API_BASE}/time-entries/${id}`);
+
+
 
 
 
