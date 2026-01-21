@@ -6,7 +6,8 @@ function Summary() {
   const [totalPerCategory, setTotalPerCategory] = useState([]);
   const [dailyBreakdown, setDailyBreakdown] = useState([]);
 
-  const API_URL = `${process.env.REACT_APP_API_BASE_URL}/...`;
+  const API_BASE = `${process.env.REACT_APP_API_BASE_URL}/summary`;
+
 
 
   // Load summary when page loads
